@@ -1,0 +1,46 @@
+{
+   "private" : true,
+   "license" : "GPL",
+    "author" : {
+        "name" : "Julian Bilcke",
+        "email" : "julian.bilcke@daizoru.com",
+        "url" : "http://github.com/daizoru"
+   },
+  "name": "market",
+  "description": "stock market simulator",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/daizoru/node-market.git"
+  },
+    "keywords" : [
+    ],
+    
+    "directories" : {
+      "lib" : "./lib",
+      "example" : "./example",
+      "test" : "./test"
+    },
+  "main" : "./lib/market",
+   "bin": {
+    
+   },
+  "scripts" : {
+    "build" : "coffee --compile --output lib/ src/",
+    "watch" : "coffee --watch --compile --output lib/ src/", 
+    "test" : "vows --spec",
+    "start" : "npm run-script build && node lib/market"
+  },
+  "engines": {
+    "node": "0.4.x || 0.6.x"
+  },
+  "dependencies": {
+     "pkginfo"         : "0.2.x", 
+     "daizoru-toolbox" : "git://github.com/daizoru/node-daizoru-toolbox.git",
+     "moment"          : "1.6.x",
+     "async"           : "*"
+  },
+  "devDependencies": {
+    "coffee-script" : "1.3.x"
+  }
+}
