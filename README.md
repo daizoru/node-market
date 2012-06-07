@@ -15,7 +15,7 @@ Everything, tests, use cases.. code, too.
 ## Example
 
 ```coffeescript
-{Market} = require './market'
+{Market,Stock} = require './market'
 
 market = new Market
 
@@ -43,6 +43,8 @@ market = new Market
       symbol: "PY"
       volume: 30000
       price: 30.00
+
+    
 
 market.createAccount "john", "JohnDoe", 1000 # 1000 bucks
 market.open()
