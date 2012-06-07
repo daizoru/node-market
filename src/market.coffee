@@ -36,7 +36,7 @@ class Session
     query = session: @passphrase, cb: onComplete
     @market.logout query
 
-class Stock
+class Product
   constructor: (args={}) ->
     @name = if args.name? then args.name else ""
     @symbol = if args.symbol? then args.symbol.toUpperCase() else @name.toUpperCase()
@@ -45,6 +45,81 @@ class Stock
 
     @market = no
 
+
+class Security
+  constructor: (args={}) ->
+    @market = no
+    @name = if args.name? then args.name else ""
+    @symbol = if args.symbol? then args.symbol.toUpperCase() else @name.toUpperCase()
+    @volume = if args.volume? then args.volume else 0
+    @price =  if args.price? then (args.price * UNIT) else 1
+
+
+class Stock extends Security
+  constructor: (args={}) ->
+    super args
+
+    # stock-related attributes
+    equityState
+
+class Bond extends Security
+  constructor: (args={}) ->
+    super args
+
+    # stock-related attributes
+    equityState
+
+    # the holder of the bond is the lender (creditor)
+    @holder = ""
+
+    # the issuer of the bond is the borrower (debtor)
+    @issuer = ""
+
+    ### Coupon
+
+     the interest rate that the issuer pays to the bond holders.
+
+     Usually this rate is fixed throughout the life of the bond.
+     It can also vary with a money market index, such as LIBOR,
+     or it can be even more exotic. The name coupon originates
+     from the fact that in the past, physical bonds were issued
+     which had coupons attached to them. On coupon dates the
+     bond holder would give the coupon to a bank in exchange
+     for the interest payment. Coupons can be paid at different
+     frequencies. It is generally semi-annual or annual.
+    ###
+    @coupon = 0
+
+
+    ### Maturity
+
+    the date on which the issuer has to repay the nominal amount. 
+
+    As long as all payments have been made, the issuer has no more 
+    obligation to the bond holders after the maturity date. The 
+    length of time until the maturity date is often referred to as
+    the term or tenor or maturity of a bond. The maturity can be
+    any length of time, although debt securities with a term of
+    less than one year are generally designated money market
+    instruments rather than bonds. Most bonds have a term of up to
+    thirty years. Some bonds have been issued with maturities of
+    up to one hundred years, and some do not mature at all. In the
+    market for U.S. Treasury securities, there are three groups of
+    bond maturities:
+      - short term (bills): maturities between one to five year; 
+        (instruments with maturities less than one year are called
+        Money Market Instruments)
+      - medium term (notes): maturities between six to twelve years;
+      - long term (bonds): maturities greater than twelve years.
+
+    source: Wikipedia
+    link: http://en.wikipedia.org/wiki/Bond_(finance)
+    ###
+    @maturity = 0
+
+    @quality = no
+
+    @optionality = no
 
 
 # a minimalist market, for one broker, one user,

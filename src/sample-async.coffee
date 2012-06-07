@@ -1,9 +1,11 @@
 {inspect} = require 'util'
 log = console.log 
-{Market,Stock,humanize} = require './market'
+{Market,Stock,Product,humanize} = require './market'
 async = require 'async'
 # initialize a new Market
 # you can create future, commodity, stock or forex markets
+
+
 market = new Market
 
   # some meta data
