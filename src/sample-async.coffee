@@ -9,8 +9,8 @@ async = require 'async'
 market = new Market
 
   # some meta data
-  name: "Node Stock Exchange"
-  symbol: "NSE"
+  name: "Programming Languaghe Exchange"
+  symbol: "PLE"
 
   # now we add some traded objects, uniquely identified by a shortname
   products:
@@ -23,7 +23,7 @@ market = new Market
 
     RB: new Stock
       name: "Ruby"
-      symbol: "JS"
+      symbol: "RB"
       volume: 30000
       price: 31.30
 

@@ -7,7 +7,7 @@
         "url" : "http://github.com/daizoru"
    },
   "name": "market",
-  "description": "stock market simulator",
+  "description": "A Market Simulator for Node",
   "version": "0.0.0",
   "repository": {
     "type": "git",
