@@ -5,7 +5,7 @@
 # but it should be funny to play with.
 
 {inspect} = require 'util'
-log = console.log 
+log = console.log
 crypto = require 'crypto'
 
 {delay,P,randint,randfloat} = require 'daizoru-toolbox'
@@ -60,14 +60,14 @@ class Stock extends Security
     super args
 
     # stock-related attributes
-    equityState
+    #equityState
 
 class Bond extends Security
   constructor: (args={}) ->
     super args
 
     # stock-related attributes
-    equityState
+    #equityState
 
     # the holder of the bond is the lender (creditor)
     @holder = ""
@@ -135,6 +135,9 @@ class Market
         product.market = @
         @products[symbol] = product
     @accounts = {}
+    if args.products
+      for login,account of args.accounts
+        @createAccount login, account.password, account.balance
     @sessions = {}
 
     @runMarket = no
@@ -162,8 +165,9 @@ class Market
     @runMarket = no
     #log "market is closed"
 
-  createAccount: (username, password, balance = 1) ->
+  createAccount: (username, password, balance = eur(0)) ->
     username = username.toLowerCase()
+    log "creating account #{username}, password #{password}, balance #{balance}"
     if username of @accounts
       throw "user #{username} already exists"
       return
@@ -171,7 +175,7 @@ class Market
     @accounts[username] =
       username: username
       password: @hash password
-      balance: balance * UNIT
+      balance: balance.multiply UNIT
       stocks: {}
 
   logout: (query) ->
