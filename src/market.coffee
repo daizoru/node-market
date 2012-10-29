@@ -362,7 +362,8 @@ class Market
       else
         0
 
-  exports.Market = Market
-  exports.Session = Session
-  exports.Stock = Stock
-  exports.humanize = humanize
+exports.Market = Market
+exports.Session = Session
+exports.Stock = Stock
+exports.humanize = humanize
+exports.Product = Product
