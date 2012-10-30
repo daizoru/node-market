@@ -1,7 +1,9 @@
 {inspect} = require 'util'
 log = console.log 
-{Market,Stock,Product,humanize} = require './market'
+{Market,Stock,Product,humanize} = require 'market'
 async = require 'async'
+require 'penny'
+
 # initialize a new Market
 # you can create future, commodity, stock or forex markets
 
@@ -19,19 +21,19 @@ market = new Market
       name: "JavaScript"
       symbol: "JS"
       volume: 30000
-      price: 31.30
+      price: 31.30.USD
 
     RB: new Stock
       name: "Ruby"
       symbol: "RB"
       volume: 30000
-      price: 31.30
+      price: 31.30.USD
 
     PY: new Stock
       name: "Python"
       symbol: "PY"
       volume: 30000
-      price: 30.00
+      price: 30.00.USD
 
 # you can put either use Market in a single app,
 # or behind a server
@@ -44,7 +46,7 @@ market = new Market
 
 # for the moment there is no persistence so we need
 # to re-create our account each time
-market.createAccount "john", "JohnDoe", 5000 # $
+market.createAccount "john", "JohnDoe", 5000.USD # $
 
 # let's open the market!
 market.open()

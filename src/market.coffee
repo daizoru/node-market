@@ -6,12 +6,22 @@
 
 {inspect} = require 'util'
 log = console.log
-crypto = require 'crypto'
 
-{delay,P,randint,randfloat} = require 'daizoru-toolbox'
+crypto = require 'crypto'
+{delay} = require 'ragtime'
+penny = require 'penny'
+timmy = require 'timmy'
 
 UNIT = 1000
 humanize = (value) -> "$#{Math.round(value)/UNIT}"
+
+# min and max will be included
+randfloat = exports.randfloat = (max,min=0) -> Math.random() * ((max)-min) + min
+
+# min and max will be included
+randint = exports.randint = (max,min=0) -> Math.floor(Math.random() * ((max+1)-min)) + min
+
+P = exports.P = (p=0.5) -> + (Math.random() < p) # TODO check if the + () is not removed by optimizers
 
 
 class Session

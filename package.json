@@ -12,10 +12,7 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/daizoru/node-market.git"
-  },
-    "keywords" : [
-    ],
-    
+    },
     "directories" : {
       "lib" : "./lib",
       "example" : "./example",
@@ -31,16 +28,15 @@
     "test" : "vows --spec",
     "start" : "npm run-script build && node lib/market"
   },
-  "engines": {
-    "node": "0.4.x || 0.6.x"
-  },
   "dependencies": {
      "pkginfo"         : "0.2.x", 
-     "daizoru-toolbox" : "git://github.com/daizoru/node-daizoru-toolbox.git",
      "moment"          : "1.6.x",
-     "async"           : "*"
+     "async"           : "0.1.x",
+     "ragtime"         : "0.0.x",
+     "penny"           : "0.0.x",
+     "timmy"           : "0.0.x"
   },
   "devDependencies": {
-    "coffee-script" : "1.3.x"
+    "coffee-script" : "*"
   }
 }
