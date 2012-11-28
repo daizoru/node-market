@@ -29,14 +29,12 @@
     "start" : "npm run-script build && node lib/market"
   },
   "dependencies": {
-     "pkginfo"         : "0.2.x", 
-     "moment"          : "1.6.x",
-     "async"           : "0.1.x",
      "ragtime"         : "0.0.x",
      "penny"           : "0.0.x",
-     "timmy"           : "0.0.x"
+     "timmy"           : "0.0.x",
+     "geekdaq"         : "0.0.x"
   },
   "devDependencies": {
-    "coffee-script" : "*"
+    "coffee-script" : "1.4.x"
   }
 }
