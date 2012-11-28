@@ -15,8 +15,9 @@ class module.exports extends Stream
     @codes          = options.tickers        ? []
     @updateInterval = options.updateInterval ? 500
     @commissions    = options.commissions    ? {buy: 0, sell: 0}
-    accounts        = options.accounts       ? []
 
+    # pre-defined accoutns loader (accept either a map or an array)
+    accounts        = options.accounts       ? []
     @accounts = {}
     if Array.isArray accounts
       for account in accounts
@@ -78,7 +79,7 @@ class module.exports extends Stream
       @emit 'transfert', username, amount
 
 
-  execute: (username, orders) =>
+  execute: ({username, orders, onComplete}) =>
     account = @accounts[username]
     @emit 'debug', "username: #{username} and account: #{pretty account}"
     for order in orders
@@ -92,7 +93,9 @@ class module.exports extends Stream
           @emit 'debug', "buy total cost: #{total_cost}"
 
           if account.balance < total_cost
-            @emit 'error', 'NOT_ENOUGH_MONEY', "#{username}'s balance is #{account.balance}, but cost is #{total_cost}"
+            msg "#{username}'s balance is #{account.balance}, but cost is #{total_cost}"
+            @emit 'error', 'NOT_ENOUGH_MONEY', msg
+            continue
           else
             account.balance -= total_cost
             #log "order executed, balance is now #{worker.balance}"
@@ -105,26 +108,26 @@ class module.exports extends Stream
               ticker: order.ticker
               amount: order.amount
               price: ticker.price
-              total_cost: total_cost
+              expenses: total_cost
         when 'sell'
           unless order.ticker of account.portfolio
-            @emit 'error', 'NOT_IN_PORTFOLIO', "#{username} doesn't own any #{order.ticker}"
-            # for now, just let go
-            #throw new Error "invalid order: we do not own any #{order.ticker}"
-            return
+            msg = "#{username} doesn't own any #{order.ticker}"
+            @emit 'error', 'NOT_IN_PORTFOLIO', msg
+            continue
           amount = account.portfolio[order.ticker]
           if amount < order.amount
-            @emit 'error', 'NOT_ENOUGH_SHARES', "#{username} doesn't have enough #{order.ticker} to sell (want to sell #{order.amount}, but we have #{amount})"
-            return
-          raw_benefits = amount * ticker.price
-          #log "raw benefits: #{raw_benefits}"
-          total_benefits = raw_benefits - (raw_benefits * @commissions.sell) # commission
-          @emit 'debug', "total benefits: #{total_benefits}"
+            msg = "#{username} doesn't have enough #{order.ticker} to sell (want to sell #{order.amount}, but we have #{amount})"
+            @emit 'error', 'NOT_ENOUGH_SHARES', msg
+            continue
+          raw_earnings = amount * ticker.price
+          total_earnings = raw_earnings - (raw_earnings * @commissions.sell)
+          @emit 'debug', "total earnings: #{total_earnings}"
           account.portfolio[order.ticker] -= order.amount
-          account.balance += total_benefits
+          account.balance += total_earnings
           account.history.push
             type: order.type
             ticker: order.symbol
             amount: order.amount
             price: ticker.price
-            total_benefit: total_benefits
+            earnings: total_earnings
+    onComplete undefined
