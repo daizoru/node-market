@@ -70,7 +70,7 @@ class module.exports extends Stream
     @emit 'registration', account.username
 
   transfert: (username, amount, origin) =>
-    @accounts[account.username].balance += amount
+    @accounts[username].balance += amount
     if origin?
       @accounts[origin].balance -= amount
       @emit 'transfert', username, amount, origin
