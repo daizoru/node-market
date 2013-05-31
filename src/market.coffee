@@ -4,9 +4,12 @@ Stream    = require 'stream'
 {delay}   = require 'ragtime'
 geekdaq   = require 'geekdaq'
 
-pretty = (obj) -> "#{inspect obj}"
+pretty = (obj) -> "#{inspect obj, no, 20, yes}"
 
 randInt = (min,max) -> Math.round(min + Math.random() * (max - min))
+isString = (obj) -> !!(obj is '' or (obj and obj.charCodeAt and obj.substr))
+
+log = console.log 
 
 class module.exports extends Stream
 
@@ -63,8 +66,8 @@ class module.exports extends Stream
     @emit 'started'
     @update()
 
-  ticker: (code) => 
-    @tickers[code]
+  ticker: (t) => 
+    if isString(t) then @tickers[t] else t
 
   register: (account) =>
     @accounts[account.username] = account
@@ -83,7 +86,7 @@ class module.exports extends Stream
     account = @accounts[username]
     @emit 'debug', "username: #{username} and account: #{pretty account}"
     for order in orders
-      @emit 'debug', "processing #{order.type} order:"
+      @emit 'debug', "going to #{order.type} #{order.amount} #{order.ticker}:"
       ticker = @ticker order.ticker
       switch order.type
         when 'buy'
@@ -93,9 +96,8 @@ class module.exports extends Stream
           @emit 'debug', "buy total cost: #{total_cost}"
 
           if account.balance < total_cost
-            msg "#{username}'s balance is #{account.balance}, but cost is #{total_cost}"
+            msg = "#{username}'s balance is #{account.balance}, but cost is #{total_cost}"
             @emit 'error', 'NOT_ENOUGH_MONEY', msg
-            continue
           else
             account.balance -= total_cost
             #log "order executed, balance is now #{worker.balance}"
@@ -113,21 +115,24 @@ class module.exports extends Stream
           unless order.ticker of account.portfolio
             msg = "#{username} doesn't own any #{order.ticker}"
             @emit 'error', 'NOT_IN_PORTFOLIO', msg
-            continue
-          amount = account.portfolio[order.ticker]
-          if amount < order.amount
-            msg = "#{username} doesn't have enough #{order.ticker} to sell (want to sell #{order.amount}, but we have #{amount})"
-            @emit 'error', 'NOT_ENOUGH_SHARES', msg
-            continue
-          raw_earnings = amount * ticker.price
-          total_earnings = raw_earnings - (raw_earnings * @commissions.sell)
-          @emit 'debug', "total earnings: #{total_earnings}"
-          account.portfolio[order.ticker] -= order.amount
-          account.balance += total_earnings
-          account.history.push
-            type: order.type
-            ticker: order.symbol
-            amount: order.amount
-            price: ticker.price
-            earnings: total_earnings
+          else
+            amount = account.portfolio[order.ticker]
+            if amount < order.amount
+              msg = "#{username} doesn't have enough #{order.ticker} to sell (want to sell #{order.amount}, but we have #{amount})"
+              @emit 'error', 'NOT_ENOUGH_SHARES', msg
+            else
+              raw_earnings = amount * ticker.price
+              total_earnings = raw_earnings - (raw_earnings * @commissions.sell)
+              @emit 'debug', "total earnings: #{total_earnings}"
+              account.portfolio[order.ticker] -= order.amount
+              account.balance += total_earnings
+              account.history.push
+                type: order.type
+                ticker: order.ticker
+                amount: order.amount
+                price: ticker.price
+                earnings: total_earnings
+        else
+          msg = "unknown order type '#{order.type}'"
+          @emit 'error', 'UNKNOWN_ORDER_TYPE', msg
     onComplete undefined
