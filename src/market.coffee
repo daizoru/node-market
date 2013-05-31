@@ -1,8 +1,9 @@
 {inspect} = require 'util'
 Stream    = require 'stream'
 
-{delay}   = require 'ragtime'
-geekdaq   = require 'geekdaq'
+geekdaq = require 'geekdaq'
+
+delay = (t,f) -> setTimeout f, t
 
 pretty = (obj) -> "#{inspect obj, no, 20, yes}"
 

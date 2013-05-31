@@ -7,7 +7,7 @@
         "url" : "http://github.com/daizoru"
    },
   "name": "market",
-  "description": "A Market Simulator for Node",
+  "description": "Work in progress lib to simulate a market",
   "version": "0.0.0",
   "repository": {
     "type": "git",
@@ -29,9 +29,6 @@
     "start" : "npm run-script build && node lib/market"
   },
   "dependencies": {
-     "ragtime"         : "0.0.x",
-     "penny"           : "0.0.x",
-     "timmy"           : "0.0.x",
      "geekdaq"         : "0.0.x"
   },
   "devDependencies": {
