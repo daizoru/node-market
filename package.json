@@ -32,6 +32,6 @@
      "geekdaq"         : "0.0.x"
   },
   "devDependencies": {
-    "coffee-script" : "1.4.x"
+    "coffee-script" : "1.6.x"
   }
 }
